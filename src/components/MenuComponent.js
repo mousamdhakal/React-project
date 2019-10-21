@@ -16,16 +16,14 @@ function RenderMenuItem({ dish, onClick }) {
     );
 }
 
-const Menu = ({ dish, onClick }) => {
-
-    const menu = dish.map((dish) => {
+const Menu = ({dishes , onClick}) => {
+    const menu = dishes.map(dish => {
         return (
             <div className="col-12 col-md-5 m-1" key={dish.id}>
                 <RenderMenuItem dish={dish} onClick={onClick} />
             </div>
         );
     });
-
     return (
         <div className="container">
             <div className="row">
