@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import {
+    Card, CardImg, CardText, CardBody,
+    CardTitle, Breadcrumb, BreadcrumbItem
+} from 'reactstrap';
+import { Link } from 'react-router-dom';
+
 
 function RenderDish({ dish }) {
     return (
@@ -16,24 +21,23 @@ function RenderDish({ dish }) {
 
 }
 
-function RenderComments({ dish }) {
+function RenderComments({ comments }) {
 
-    if (dish.comments != null)
+    if (comments != null)
         return (
-            <div className="list-unstyled">
+            <div className= "col-12 col-md-5 m-1">
                 <h4>Comments</h4>
-                <li>{dish.comments[0]["comment"]}</li><br></br>
+                <ul className="list-unstyled">
+                    {comments.map((comment) => {
+                        return(
+                            <li key ={comment.id}>
+                            <p>{comment.comment}</p>
+                                <p>-- {comment.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))} </p>
+                            </li>
+                        );
+                    })}
 
-                <li>-- {dish.comments[0]["author"]} , {dish.comments[0]["date"]}</li>
-                <br></br><li>{dish.comments[1]["comment"]}</li>
-                <br></br><li>-- {dish.comments[1]["author"]} , {dish.comments[1]["date"]}</li>
-                <br></br><li>{dish.comments[2]["comment"]}</li>
-                <br></br><li>-- {dish.comments[2]["author"]} , {dish.comments[2]["date"]}</li>
-                <br></br><li>{dish.comments[3]["comment"]}</li>
-                <br></br><li>-- {dish.comments[3]["author"]} , {dish.comments[3]["date"]}</li>
-                <br></br><li>{dish.comments[4]["comment"]}</li>
-                <br></br><li>-- {dish.comments[4]["author"]} , {dish.comments[4]["date"]}</li>
-
+                </ul>
             </div>
         );
     else
@@ -46,23 +50,28 @@ function RenderComments({ dish }) {
 
 const DishDetail = (props) => {
 
-    if (props.dish != null)
         return (
-            <div className='container'>
+            <div className="container">
                 <div className="row">
-                       <div key={props.dish.id} className="col-12 col-sm-5 m-1">
+                    <Breadcrumb>
+
+                        <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>{props.dish.name}</h3>
+                        <hr />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
                         <RenderDish dish={props.dish} />
                     </div>
-                    <div className="col-12 col-sm-5 m-1">
-                        <RenderComments dish={props.dish} />
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderComments comments={props.comments} />
                     </div>
                 </div>
             </div>
-        );
-    else
-        return (
-
-            <div></div>
         );
 }
 
